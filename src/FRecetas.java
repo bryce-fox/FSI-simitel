@@ -8,7 +8,7 @@ public class FRecetas extends javax.swing.JFrame {
 
    Conexion2 cnx;
    String todo = "SELECT * FROM recetas";
-   //ImagenIcon foto;
+   
    
     public FRecetas() {
         initComponents();
@@ -102,7 +102,7 @@ public class FRecetas extends javax.swing.JFrame {
         getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 110, 80, 20));
         getContentPane().add(txtFolio, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 110, 100, -1));
 
-        jButton1.setText("Actualizar");
+        jButton1.setText("Actualizar estado");
         jButton1.addActionListener(this::jButton1ActionPerformed);
         getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 10, 140, 40));
 
@@ -112,7 +112,7 @@ public class FRecetas extends javax.swing.JFrame {
 
         jButton3.setText("Detalles Receta");
         jButton3.addActionListener(this::jButton3ActionPerformed);
-        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 60, 120, 30));
+        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 60, 180, 30));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -123,9 +123,10 @@ public class FRecetas extends javax.swing.JFrame {
 
     private void btnInsertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInsertActionPerformed
       try {
-        Object[] res = cnx.ejecutarCRUD(
+        Object[] res = cnx.ejecutarCRUDSinSalida(
             "insertar_receta",
             new Object[]{
+                Integer.parseInt(txtNumero.getText()),
                 txtFecha.getText(),      
                 txtVigencia.getText(),   
                 txtEstado.getText(),     
@@ -143,14 +144,11 @@ public class FRecetas extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
     try {
-        Object[] res = cnx.ejecutarCRUD(
-            "actualizar_receta",
+        Object[] res = cnx.ejecutarCRUDSinSalida(
+            "actualizar_estado_receta",
             new Object[]{
                 Integer.parseInt(txtNumero.getText()),
-                txtFecha.getText(),      // formato: 2026-12-24 10:30:00
-                txtVigencia.getText(),   // formato: 2026-12-24
-                txtEstado.getText(),
-                Integer.parseInt(txtFolio.getText())
+                txtEstado.getText()
             }
         );
         JOptionPane.showMessageDialog(this, "Estado: " + res[0] + "\nMensaje: " + res[1]);
@@ -164,7 +162,7 @@ public class FRecetas extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
             try {
-        Object[] res = cnx.ejecutarCRUD(
+        Object[] res = cnx.ejecutarCRUDSinSalida(
             "borrar_receta",
             new Object[]{
                 Integer.parseInt(txtNumero.getText())

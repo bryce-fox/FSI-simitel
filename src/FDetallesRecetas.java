@@ -20,7 +20,7 @@ Conexion2 cnx;
         if (cnx.conectar("localhost", "simitel", "root", "") == 1) {
         cnx.entablar(todoR, jTRecetas);
         cnx.seleccionar("SELECT numero FROM recetas", cboNumR);
-        cnx.seleccionar("SELECT claveme FROM medicamentos", cboMedicamentos);
+        cnx.seleccionar("SELECT clave FROM medicamentos", cboMedicamentos);
     } else {
         JOptionPane.showMessageDialog(this, "Error al conectar");
         System.exit(0);
@@ -62,13 +62,13 @@ Conexion2 cnx;
         getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 6, 143, 65));
 
         jLabel1.setText("Recetas Numero");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 100, 90, -1));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 100, 130, -1));
 
         jLabel2.setText("Medicamentos clave:");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 130, 130, -1));
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 130, 160, -1));
 
         jLabel3.setText("Dosis");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 160, 80, -1));
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 160, 80, -1));
         getContentPane().add(txtDosis, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 160, 120, -1));
 
         jTRecetas.setModel(new javax.swing.table.DefaultTableModel(
@@ -91,7 +91,7 @@ Conexion2 cnx;
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 250, 710, 350));
 
-        jButton2.setText("Actualizar");
+        jButton2.setText("Actualizar dosis");
         jButton2.addActionListener(this::jButton2ActionPerformed);
         getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 10, 180, 50));
 
@@ -100,7 +100,7 @@ Conexion2 cnx;
         getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 20, 170, 40));
 
         jLabel4.setText("Frecuencia");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 190, 110, -1));
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 190, 110, -1));
         getContentPane().add(txtFrecuencia, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 190, 120, -1));
 
         jLabel5.setText("Duracion");
@@ -122,8 +122,8 @@ Conexion2 cnx;
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
-        Object[] res = cnx.ejecutarCRUD(
-            "insertar_detalles_recetas",
+        Object[] res = cnx.ejecutarCRUDSinSalida(
+            "insertar_detalle_receta",
             new Object[]{
                 Integer.parseInt(cboNumR.getSelectedItem().toString()),
                 cboMedicamentos.getSelectedItem().toString(),
@@ -147,7 +147,7 @@ Conexion2 cnx;
     if (f < 0) {
         return;
     }
-    // Columnas: recetas_mumero, medicamentos_claveme, dosis, frecuencia, duracion, observacion
+    // Columnas: recetas_numero, medicamentos_clave, dosis, frecuencia, duracion, observaciones
     cboNumR.setSelectedItem(String.valueOf(jTRecetas.getValueAt(f, 0)));
     cboMedicamentos.setSelectedItem(String.valueOf(jTRecetas.getValueAt(f, 1)));
     txtDosis.setText(String.valueOf(jTRecetas.getValueAt(f, 2)));
@@ -158,15 +158,12 @@ Conexion2 cnx;
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
          try {
-        Object[] res = cnx.ejecutarCRUD(
-            "actualizar_detalles_recetas",
+        Object[] res = cnx.ejecutarCRUDSinSalida(
+            "actualizar_dosis_detalle",
             new Object[]{
                 Integer.parseInt(cboNumR.getSelectedItem().toString()),
                 cboMedicamentos.getSelectedItem().toString(),
-                txtDosis.getText(),
-                txtFrecuencia.getText(),
-                txtDuracion.getText(),
-                txtObservacion.getText()
+                txtDosis.getText()
             }
         );
         JOptionPane.showMessageDialog(this, "Estado: " + res[0] + "\nMensaje: " + res[1]);
@@ -180,8 +177,8 @@ Conexion2 cnx;
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
          try {
-        Object[] res = cnx.ejecutarCRUD(
-            "borrar_detalles_recetas",
+        Object[] res = cnx.ejecutarCRUDSinSalida(
+            "borrar_detalle_receta",
             new Object[]{
                 Integer.parseInt(cboNumR.getSelectedItem().toString()),
                 cboMedicamentos.getSelectedItem().toString()
@@ -218,7 +215,7 @@ Conexion2 cnx;
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new FRecetas().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new FDetallesRecetas().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
